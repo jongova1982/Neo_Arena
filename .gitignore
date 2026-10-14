@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales y variables locales
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Herramientas, compilación y editores
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+.vscode/
+.idea/
+
+# Datos generados por Neon Arena
+estadisticas_neon_arena.csv
+*.log
+
+# Otros prototipos que no pertenecen a este repositorio
+README.txt
+turbo_racers_3d.py
+turbo_racers_3d_PRO.py
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
