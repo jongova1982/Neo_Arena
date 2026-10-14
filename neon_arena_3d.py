@@ -16,7 +16,6 @@ except ImportError as exc:
 
 try:
     from direct.showbase.ShowBase import ShowBase
-    from direct.showbase.ShowBaseGlobal import globalClock
     from direct.task import Task
     from direct.gui.OnscreenText import OnscreenText
     from panda3d.core import (AmbientLight, DirectionalLight, TextNode, Vec3, Vec4,
@@ -63,20 +62,19 @@ class NeonArena(ShowBase):
         props = WindowProperties()
         props.setTitle('NEON ARENA 3D | AI BATTLE')
         props.setSize(1280, 720)
-        if self.win is not None and hasattr(self.win, 'requestProperties'):
-            self.win.requestProperties(props)
+        self.win.requestProperties(props)
         self.keys = {k: False for k in ('w','a','s','d','space')}
         for key in self.keys:
             self.accept(key, self.set_key, [key, True])
             self.accept(key+'-up', self.set_key, [key, False])
-        self.accept('r', self.restart_game)
+        self.accept('r', self.restart)
         self.accept('escape', self.userExit)
         self.last_time = 0
         self.session_events = []
         self.build_ai()
         self.build_world()
         self.build_hud()
-        self.restart_game()
+        self.restart()
         self.taskMgr.add(self.update_game, 'update_game')
 
     def set_key(self, key, value):
@@ -137,13 +135,12 @@ class NeonArena(ShowBase):
         self.message = OnscreenText(text='', pos=(0,.12), scale=.11,
                                     fg=(1,.85,.35,1), mayChange=True)
 
-    def restart_game(self):
-        for drone in getattr(self, 'drones', []):
-            drone['node'].removeNode()
-        for orb in getattr(self, 'orbs', []):
-            orb.removeNode()
-        if not hasattr(self, 'player'):
-            raise RuntimeError('El jugador no fue creado: revisa build_world()')
+    def restart(self):
+        if hasattr(self, 'drones'):
+            for drone in self.drones:
+                drone['node'].removeNode()
+            for orb in self.orbs:
+                orb.removeNode()
         self.player.setPos(0,0,0)
         self.health = 100
         self.score = 0
